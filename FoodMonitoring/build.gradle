@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'io.franzbecker.gradle-lombok' version '3.2.0'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+lombok {
+    version = '1.18.20'
+    sha256 = ""
+}
+
+dependencies {
+    implementation project (":api")
+    implementation project (":configuration")
+    implementation project (":controller")
+    implementation project (":repository")
+    implementation project (":service")
+}
+
+
+allprojects {
+    apply plugin : 'java'
+    dependencies {
+        implementation 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+        implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+        implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+    }
+}

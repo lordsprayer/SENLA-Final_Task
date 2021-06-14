@@ -1,0 +1,18 @@
+plugins {
+    id 'java-library'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.6'
+
+    api group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.1'
+
+    api project (":model")
+}

@@ -1,0 +1,8 @@
+rootProject.name = 'FoodMonitoring'
+include 'model'
+include 'api'
+include 'repository'
+include 'service'
+include 'controller'
+include 'configuration'
+
