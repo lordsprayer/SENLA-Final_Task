@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group 'org.example'
@@ -20,9 +20,9 @@ dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 
-    implementation project (":api")
-    implementation project(":repository")
-    implementation project (":configuration")
+    api project (":api")
+    api project(":repository")
+    api project (":configuration")
 }
 
 test {
