@@ -1,7 +1,5 @@
 package com.senla.courses.service;
 
-import com.senla.courses.dto.UserDto;
-import com.senla.courses.mapper.UserMapper;
 import com.senla.courses.model.Role;
 import com.senla.courses.model.User;
 import com.senla.courses.repository.UserRepository;
@@ -11,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,10 +38,9 @@ public class UserService extends ConstantUtil implements IUserService {
     }
 
     @Override
-    public UserDto getUserById(Integer id) {
+    public User getUserById(Integer id) {
         try {
-            User userFromDb = userRepository.getById(id);
-            return Mappers.getMapper(UserMapper.class).userToUserDto(userFromDb);
+            return userRepository.getById(id);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;

@@ -22,4 +22,9 @@ public class Shop {
     private String address;
     @OneToMany(mappedBy = "shop")
     private Set<ShopProduct> shopProducts;
+
+    public Shop(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 }

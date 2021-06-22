@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IUserService extends UserDetailsService {
     List<User> getAllUsers();
-    UserDto getUserById(Integer id);
+    User getUserById(Integer id);
     boolean saveUser(User user);
     void deleteUser(Integer id);
     void updateUser(Integer id);

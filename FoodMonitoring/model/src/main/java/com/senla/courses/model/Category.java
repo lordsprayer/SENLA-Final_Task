@@ -18,6 +18,10 @@ public class Category {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "category")
     private Set<Product> products;
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

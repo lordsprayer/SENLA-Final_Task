@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group 'org.example'
@@ -10,7 +10,12 @@ repositories {
 }
 
 dependencies {
-    implementation project (":api")
-    implementation project (":configuration")
+    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.30.Final'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.6'
+
+    api project (":api")
+    api project (":configuration")
 
 }

@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 
     api project (":api")
-    api project(":repository")
+    api project (":repository")
     api project (":configuration")
 }
 

@@ -23,4 +23,9 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product")
     private Set<ShopProduct> shopProducts;
+
+    public Product(String name, Category category) {
+        this.name = name;
+        this.category = category;
+    }
 }

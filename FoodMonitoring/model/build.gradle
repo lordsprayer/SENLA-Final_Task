@@ -10,11 +10,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    compileOnly 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.6'
+    implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    compileOnly 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+    api group: 'org.springframework', name: 'spring-context', version: '5.3.6'
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.6'
 
-    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    api group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 }

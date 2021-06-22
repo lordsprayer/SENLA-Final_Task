@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'war'
     id 'io.franzbecker.gradle-lombok' version '3.2.0'
 }
@@ -18,11 +18,11 @@ lombok {
 }
 
 dependencies {
-    implementation project (":api")
-    implementation project (":configuration")
-    implementation project (":controller")
-    implementation project (":repository")
-    implementation project (":service")
+    api project (":api")
+    api project (":configuration")
+    api project (":controller")
+    api project (":repository")
+    api project (":service")
 }
 
 
