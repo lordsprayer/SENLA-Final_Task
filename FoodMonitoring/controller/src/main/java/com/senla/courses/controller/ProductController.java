@@ -1,4 +1,4 @@
-package com.senal.courses.controller;
+package com.senla.courses.controller;
 
 import com.senla.courses.dto.ProductDto;
 import com.senla.couses.api.service.IProductService;
@@ -32,9 +32,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createRequest(@RequestBody ProductDto productDto){
+    public ResponseEntity<Void> createRequest(@RequestBody String name, @RequestParam Integer category){
         log.log(Level.INFO, "Received post request: /products");
-        productService.saveProduct(productDto);
+        productService.saveProduct(name, category);
         return ResponseEntity.noContent().build();
     }
 

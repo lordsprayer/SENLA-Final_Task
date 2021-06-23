@@ -1,5 +1,6 @@
 package com.senla.courses.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +34,17 @@ public class User implements UserDetails {
     @Transient
     private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
+    //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Set<Role> roles;
+
+    public User(String name, String surname, String login, String password, String passwordConfirm, String phone) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+        this.passwordConfirm = passwordConfirm;
+    }
 
     @Override
     public String getUsername() {

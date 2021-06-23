@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -69,12 +70,25 @@ public class UserService extends ConstantUtil implements IUserService {
     public void deleteUser(Integer id) {
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
+        } else {
+            log.log(Level.WARN, SEARCH_ERROR);
         }
     }
 
     @Override
-    public void updateUser(Integer id) {
-
+    public void updateUser(User user) {
+        try {
+            User userFromDB = userRepository.getById(user.getId());
+            userFromDB.setName(user.getName());
+            userFromDB.setSurname(user.getSurname());
+            userFromDB.setLogin(user.getLogin());
+            userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userFromDB.setPhone(user.getPhone());
+            userRepository.save(userFromDB);
+        } catch (Exception e) {
+            log.log(Level.WARN, SAVING_ERROR);
+            throw e;
+        }
     }
 
     @Override

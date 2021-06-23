@@ -79,7 +79,6 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             shopProduct.setProduct(Mappers.getMapper(ProductMapper.class).productDtoToProduct(shopProductDto.getProductDto()));
             shopProduct.setCost(shopProductDto.getCost());
             shopProduct.setDate(shopProductDto.getDate());
-            //todo узнать, нужен ли сэйв
             shopProductRepository.save(shopProduct);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);

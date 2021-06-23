@@ -1,4 +1,4 @@
-package com.senal.courses.controller;
+package com.senla.courses.controller;
 
 import com.senla.courses.dto.ShopDto;
 import com.senla.couses.api.service.IShopService;

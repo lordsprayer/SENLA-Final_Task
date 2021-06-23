@@ -34,6 +34,6 @@ dependencies {
     api group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.1'
 
 
-    api project (":model")
+    api project(":repository")
     api project (":api")
 }

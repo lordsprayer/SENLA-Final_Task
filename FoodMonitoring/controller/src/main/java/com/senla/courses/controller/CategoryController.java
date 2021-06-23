@@ -1,4 +1,4 @@
-package com.senal.courses.controller;
+package com.senla.courses.controller;
 
 import com.senla.courses.dto.CategoryDto;
 import com.senla.couses.api.service.ICategoryService;
@@ -45,7 +45,7 @@ public class CategoryController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping
+    @PutMapping()
     public ResponseEntity<Void> updateCategory(@RequestBody CategoryDto categoryDto){
         log.log(Level.INFO, "Received put request: /categories");
         categoryService.updateCategory(categoryDto);

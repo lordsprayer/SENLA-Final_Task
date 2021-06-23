@@ -75,7 +75,6 @@ public class ShopService extends ConstantUtil implements IShopService {
             Shop shop = shopRepository.getById(shopDto.getId());
             shop.setName(shopDto.getName());
             shop.setAddress(shopDto.getAddress());
-            //todo узнать, нужен ли сэйв
             shopRepository.save(shop);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);

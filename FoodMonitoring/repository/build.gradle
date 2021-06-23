@@ -14,8 +14,9 @@ dependencies {
     implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.30.Final'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.6'
+    api group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.1'
 
-    api project (":api")
-    api project (":configuration")
+
+    api project (":model")
 
 }

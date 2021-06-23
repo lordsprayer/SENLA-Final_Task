@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.senla.courses.repository")
 @EnableTransactionManagement
 public class DataSourceConfig {
 
@@ -45,9 +45,9 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public JpaTransactionManager jpaTransactionManager() {
+    public JpaTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
     }
 
@@ -58,7 +58,7 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdaptor());

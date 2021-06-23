@@ -1,4 +1,4 @@
-package com.senal.courses.exception;
+package com.senla.courses.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

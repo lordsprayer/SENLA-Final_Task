@@ -74,7 +74,6 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
         try {
             Category category = categoryRepository.getById(categoryDto.getId());
             category.setName(categoryDto.getName());
-            //todo узнать, нужен ли сэйв
             categoryRepository.save(category);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
