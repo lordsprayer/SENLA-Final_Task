@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
     private Integer id;
     private String name;
-    private CategoryDto categoryDto;
+    private CategoryDto category;
 
-    public ProductDto(String name, CategoryDto categoryDto) {
+    public ProductDto(String name, CategoryDto category) {
         this.name = name;
-        this.categoryDto = categoryDto;
+        this.category = category;
     }
 }

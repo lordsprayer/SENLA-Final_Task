@@ -4,27 +4,33 @@ import com.senla.courses.dto.ShopProductDto;
 import com.senla.courses.mapper.ProductMapper;
 import com.senla.courses.mapper.ShopMapper;
 import com.senla.courses.mapper.ShopProductMapper;
+import com.senla.courses.model.Product;
+import com.senla.courses.model.Shop;
 import com.senla.courses.model.ShopProduct;
+import com.senla.courses.repository.ProductRepository;
 import com.senla.courses.repository.ShopProductRepository;
+import com.senla.courses.repository.ShopRepository;
 import com.senla.courses.util.ConstantUtil;
 import com.senla.couses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class ShopProductService extends ConstantUtil implements IShopProductService {
 
-    private static final Logger log = LogManager.getLogger(ShopProductService.class);
     private final ShopProductRepository shopProductRepository;
+    private final ShopRepository shopRepository;
+    private final ProductRepository productRepository;
     private final ShopProductMapper mapper = Mappers.getMapper(ShopProductMapper.class);
 
     @Override
@@ -50,9 +56,11 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
     }
 
     @Override
-    public void saveShopProduct(ShopProductDto shopProductDto) {
+    public void saveShopProduct(Integer shopId, Integer productId, LocalDate date, Double cost) {
         try {
-            ShopProduct shopProduct = mapper.shopProductDtoToShopProduct(shopProductDto);
+            Shop shop = shopRepository.getById(shopId);
+            Product product = productRepository.getById(productId);
+            ShopProduct shopProduct = new ShopProduct(shop, product, cost, date);
             shopProductRepository.save(shopProduct);
         } catch (Exception e){
             log.log(Level.WARN, SAVING_ERROR);
@@ -75,8 +83,8 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
     public void updateShopProduct(ShopProductDto shopProductDto) {
         try {
             ShopProduct shopProduct = shopProductRepository.getById(shopProductDto.getId());
-            shopProduct.setShop(Mappers.getMapper(ShopMapper.class).shopDtoToShop(shopProductDto.getShopDto()));
-            shopProduct.setProduct(Mappers.getMapper(ProductMapper.class).productDtoToProduct(shopProductDto.getProductDto()));
+            shopProduct.setShop(Mappers.getMapper(ShopMapper.class).shopDtoToShop(shopProductDto.getShop()));
+            shopProduct.setProduct(Mappers.getMapper(ProductMapper.class).productDtoToProduct(shopProductDto.getProduct()));
             shopProduct.setCost(shopProductDto.getCost());
             shopProduct.setDate(shopProductDto.getDate());
             shopProductRepository.save(shopProduct);

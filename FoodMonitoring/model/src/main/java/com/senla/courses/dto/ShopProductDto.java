@@ -12,14 +12,14 @@ import java.time.LocalDate;
 
 public class ShopProductDto {
     private Integer id;
-    private ShopDto shopDto;
-    private ProductDto productDto;
+    private ShopDto shop;
+    private ProductDto product;
     private Double cost;
     private LocalDate date;
 
-    public ShopProductDto(ShopDto shopDto, ProductDto productDto, Double cost, LocalDate date) {
-        this.shopDto = shopDto;
-        this.productDto = productDto;
+    public ShopProductDto(ShopDto shop, ProductDto product, Double cost, LocalDate date) {
+        this.shop = shop;
+        this.product = product;
         this.cost = cost;
         this.date = date;
     }

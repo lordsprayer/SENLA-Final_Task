@@ -34,7 +34,6 @@ public class User implements UserDetails {
     @Transient
     private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
-    //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Set<Role> roles;
 
     public User(String name, String surname, String login, String password, String passwordConfirm, String phone) {

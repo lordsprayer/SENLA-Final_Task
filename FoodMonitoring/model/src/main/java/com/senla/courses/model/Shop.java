@@ -20,7 +20,7 @@ public class Shop {
     private String name;
     @Column(name = "address")
     private String address;
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     private Set<ShopProduct> shopProducts;
 
     public Shop(String name, String address) {

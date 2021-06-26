@@ -10,11 +10,10 @@ import com.senla.courses.repository.ProductRepository;
 import com.senla.courses.util.ConstantUtil;
 import com.senla.couses.api.service.IProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,23 +22,13 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class ProductService extends ConstantUtil implements IProductService {
 
-    private static final Logger log = LogManager.getLogger(ProductService.class);
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper mapper = Mappers.getMapper(ProductMapper.class);
 
-    @Override
-    public List<ProductDto> getAllProducts() {
-        try {
-            List<Product> products = productRepository.findAll();
-            return mapper.productListToProductDtoList(products);
-        } catch (Exception e) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
-        }
-    }
 
     @Override
     public ProductDto getProductById(Integer id) {
@@ -80,10 +69,32 @@ public class ProductService extends ConstantUtil implements IProductService {
         try {
             Product product = productRepository.getById(productDto.getId());
             product.setName(productDto.getName());
-            product.setCategory(Mappers.getMapper(CategoryMapper.class).categoryDtoToCategory(productDto.getCategoryDto()));
+            product.setCategory(Mappers.getMapper(CategoryMapper.class).categoryDtoToCategory(productDto.getCategory()));
             productRepository.save(product);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ProductDto> getProductsByCategory(String category) {
+        try {
+            List<Product> products = productRepository.findByCategory_name(category);
+            return mapper.productListToProductDtoList(products);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ProductDto> getSortProductsBy(Sort sort) {
+        try {
+            List<Product> products = productRepository.findAll(sort);
+            return mapper.productListToProductDtoList(products);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
             throw e;
         }
     }

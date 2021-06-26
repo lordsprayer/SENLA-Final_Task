@@ -3,9 +3,8 @@ package com.senla.courses.controller;
 import com.senla.courses.dto.CategoryDto;
 import com.senla.couses.api.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
+@Log4j2
 public class CategoryController {
 
-    private static final Logger log = LogManager.getLogger(CategoryController.class.getName());
     private final ICategoryService categoryService;
 
     @GetMapping

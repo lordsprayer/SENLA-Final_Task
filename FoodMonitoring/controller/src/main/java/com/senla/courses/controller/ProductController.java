@@ -3,9 +3,9 @@ package com.senla.courses.controller;
 import com.senla.courses.dto.ProductDto;
 import com.senla.couses.api.service.IProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@Log4j2
 public class ProductController {
 
-    private static final Logger log = LogManager.getLogger(ProductController.class.getName());
     private final IProductService productService;
-
-    @GetMapping
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
-        log.log(Level.INFO, "Received get all request: /products");
-        return ResponseEntity.ok(productService.getAllProducts());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable Integer id){
@@ -50,5 +44,17 @@ public class ProductController {
         log.log(Level.INFO, "Received put request: /products");
         productService.updateProduct(productDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<ProductDto>> getProductsByCategory(@RequestParam String category) {
+        log.log(Level.INFO, "Received get all request: /products");
+        return ResponseEntity.ok(productService.getProductsByCategory(category));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getSortProducts(@RequestParam(defaultValue = "id") String param) {
+        log.log(Level.INFO, "Received get all request: /products");
+        return ResponseEntity.ok(productService.getSortProductsBy(Sort.by(Sort.Direction.ASC, param)));
     }
 }

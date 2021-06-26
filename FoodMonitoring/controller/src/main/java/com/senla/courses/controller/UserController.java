@@ -3,21 +3,20 @@ package com.senla.courses.controller;
 import com.senla.courses.model.User;
 import com.senla.couses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@RequiredArgsConstructor
+
 @RestController
+@RequiredArgsConstructor
+@Log4j2
 public class UserController {
 
-    private static final Logger log = LogManager.getLogger(UserController.class.getName());
     private final IUserService userService;
 
     @PostMapping("/registration")

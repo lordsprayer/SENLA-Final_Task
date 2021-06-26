@@ -7,9 +7,8 @@ import com.senla.courses.repository.CategoryRepository;
 import com.senla.courses.util.ConstantUtil;
 import com.senla.couses.api.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +18,9 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class CategoryService extends ConstantUtil implements ICategoryService {
 
-    private static final Logger log = LogManager.getLogger(CategoryService.class);
     private final CategoryRepository categoryRepository;
     private final CategoryMapper mapper = Mappers.getMapper(CategoryMapper.class);
 
