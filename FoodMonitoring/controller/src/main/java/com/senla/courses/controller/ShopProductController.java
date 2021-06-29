@@ -1,5 +1,7 @@
 package com.senla.courses.controller;
 
+import com.senla.courses.api.IPriceComparison;
+import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.dto.ShopProductDto;
 import com.senla.couses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +54,18 @@ public class ShopProductController {
         log.log(Level.INFO, "Received put request: /products");
         shopProductService.updateShopProduct(shopProductDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/dynamics/{id}")
+    public ResponseEntity<List<IPriceDynamics>> getPriceDynamicsByProductId(@PathVariable Integer id) {
+        log.log(Level.INFO, "Received get all request: /shopproducts/dynamics");
+        return ResponseEntity.ok(shopProductService.getPriceDynamics(id));
+    }
+
+    @GetMapping("/comparisons")
+    public ResponseEntity<List<IPriceComparison>> getPriceComparisonByProductId(@RequestParam String date, Integer shop1, Integer shop2) {
+        log.log(Level.INFO, "Received get all request: /shopproducts/comparisons");
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(shopProductService.getPriceComparison(localDate, shop1, shop2));
     }
 }

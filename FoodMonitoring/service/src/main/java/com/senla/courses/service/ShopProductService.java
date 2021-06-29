@@ -1,5 +1,7 @@
 package com.senla.courses.service;
 
+import com.senla.courses.api.IPriceComparison;
+import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.dto.ShopProductDto;
 import com.senla.courses.mapper.ProductMapper;
 import com.senla.courses.mapper.ShopMapper;
@@ -90,6 +92,26 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             shopProductRepository.save(shopProduct);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<IPriceDynamics> getPriceDynamics(Integer id) {
+        try {
+            return shopProductRepository.avgProductCostByDate(id);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2) {
+        try {
+            return shopProductRepository.comparisonPricesByShops(date, shop1, shop2);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
             throw e;
         }
     }

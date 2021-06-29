@@ -20,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //todo подправить доступ, оставить гет методы для юзеров, остальное - админу
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
