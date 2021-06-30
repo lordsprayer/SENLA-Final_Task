@@ -19,4 +19,6 @@ dependencies {
     api group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
     api group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.2'
+
+    api group: 'com.opencsv', name: 'opencsv', version: '5.4'
 }

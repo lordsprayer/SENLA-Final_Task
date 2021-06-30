@@ -2,6 +2,7 @@ package com.senla.courses.service;
 
 import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
+import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ShopProductDto;
 import com.senla.courses.mapper.ProductMapper;
 import com.senla.courses.mapper.ShopMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,6 +114,25 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             return shopProductRepository.comparisonPricesByShops(date, shop1, shop2);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
+        }
+    }
+
+    @Override
+    public void saveFromShopProductCsv(List<ShopProductCsv> shopProductCsvList) {
+        try {
+            List<ShopProduct> shopProductList = new ArrayList<>();
+        for(ShopProductCsv shopProductCsv : shopProductCsvList) {
+            ShopProduct shopProduct = new ShopProduct();
+            shopProduct.setShop(shopRepository.getById(shopProductCsv.getShop()));
+            shopProduct.setProduct(productRepository.getById(shopProductCsv.getProduct()));
+            shopProduct.setCost(shopProductCsv.getCost());
+            shopProduct.setDate(LocalDate.parse(shopProductCsv.getDate()));
+            shopProductList.add(shopProduct);
+        }
+        shopProductList.forEach(shopProductRepository::save);
+        } catch (Exception e) {
+            log.log(Level.WARN, SAVING_ERROR);
             throw e;
         }
     }

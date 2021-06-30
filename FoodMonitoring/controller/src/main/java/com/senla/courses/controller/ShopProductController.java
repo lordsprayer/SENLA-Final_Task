@@ -1,16 +1,30 @@
 package com.senla.courses.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
+import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ShopProductDto;
+import com.senla.courses.model.ShopProduct;
 import com.senla.couses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
 
+import javax.servlet.MultipartConfigElement;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -67,5 +81,38 @@ public class ShopProductController {
         log.log(Level.INFO, "Received get all request: /shopproducts/comparisons");
         LocalDate localDate = LocalDate.parse(date);
         return ResponseEntity.ok(shopProductService.getPriceComparison(localDate, shop1, shop2));
+    }
+
+    @PostMapping(value = "/data", consumes = "multipart/form-data")
+    public ResponseEntity<Void> postShoProductFromFile(@RequestParam("file") MultipartFile file) {
+        log.log(Level.INFO, "Received get all request: /shopproducts/data");
+        System.out.println("Damn it, it's an uploaded file!!!! " + file.getOriginalFilename());
+        // validate file
+        if (file.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+
+            // parse CSV file to create a list of `User` objects
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+
+                // create csv bean reader
+                CsvToBean<ShopProductCsv> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(ShopProductCsv.class)
+                        .withIgnoreLeadingWhiteSpace(true)
+                        .build();
+
+                // convert `CsvToBean` object to list of users
+                List<ShopProductCsv> shopProductCsvList = csvToBean.parse();
+                shopProductService.saveFromShopProductCsv(shopProductCsvList);
+                // TODO: save users in DB?
+
+
+
+            } catch (Exception ex) {
+
+            }
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }

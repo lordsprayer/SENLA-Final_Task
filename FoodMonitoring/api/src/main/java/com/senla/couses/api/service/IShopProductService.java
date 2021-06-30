@@ -2,6 +2,7 @@ package com.senla.couses.api.service;
 
 import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
+import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ShopProductDto;
 
 import java.time.LocalDate;
@@ -16,4 +17,6 @@ public interface IShopProductService {
 
     List<IPriceDynamics> getPriceDynamics(Integer id);
     List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2);
+
+    void saveFromShopProductCsv(List<ShopProductCsv> shopProductCsvList);
 }
