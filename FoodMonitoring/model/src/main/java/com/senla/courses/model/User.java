@@ -45,6 +45,15 @@ public class User implements UserDetails {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public User(Integer id, String name, String surname, String login, String password, String phone) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.phone = phone;
+    }
+
     @Override
     public String getUsername() {
         return login;

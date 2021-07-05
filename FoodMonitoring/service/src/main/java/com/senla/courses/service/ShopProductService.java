@@ -14,6 +14,7 @@ import com.senla.courses.repository.ProductRepository;
 import com.senla.courses.repository.ShopProductRepository;
 import com.senla.courses.repository.ShopRepository;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.couses.api.exception.ServiceException;
 import com.senla.couses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +45,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             return mapper.shopProductListToShoProductDtoList(shopProducts);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -55,7 +56,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             return mapper.shopProductToShopProductDto(shopProduct);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -68,7 +69,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             shopProductRepository.save(shopProduct);
         } catch (Exception e){
             log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            throw new ServiceException(SAVING_ERROR, e);
         }
     }
 
@@ -79,7 +80,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             shopProductRepository.delete(shopProduct);
         }  catch (Exception e){
             log.log(Level.WARN, DELETING_ERROR);
-            throw e;
+            throw new ServiceException(DELETING_ERROR, e);
         }
     }
 
@@ -94,7 +95,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             shopProductRepository.save(shopProduct);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
-            throw e;
+            throw new ServiceException(UPDATING_ERROR, e);
         }
     }
 
@@ -104,7 +105,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             return shopProductRepository.avgProductCostByDate(id);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -114,7 +115,7 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
             return shopProductRepository.comparisonPricesByShops(date, shop1, shop2);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -133,7 +134,8 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
         shopProductList.forEach(shopProductRepository::save);
         } catch (Exception e) {
             log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            throw new ServiceException(SAVING_ERROR, e);
         }
     }
+
 }

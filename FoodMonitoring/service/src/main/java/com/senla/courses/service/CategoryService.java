@@ -5,6 +5,7 @@ import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.model.Category;
 import com.senla.courses.repository.CategoryRepository;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.couses.api.exception.ServiceException;
 import com.senla.couses.api.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +14,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 
 @Service
@@ -31,7 +33,7 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
             return mapper.categoryListToCategoryDtoList(categories);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -42,7 +44,7 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
             return mapper.categoryToCategoryDto(category);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -53,7 +55,7 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
             categoryRepository.save(category);
         } catch (Exception e){
             log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            throw new ServiceException(SAVING_ERROR, e);
         }
     }
 
@@ -64,7 +66,7 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
             categoryRepository.delete(category);
         }  catch (Exception e){
             log.log(Level.WARN, DELETING_ERROR);
-            throw e;
+            throw new ServiceException(DELETING_ERROR, e);
         }
     }
 
@@ -76,7 +78,7 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
             categoryRepository.save(category);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
-            throw e;
+            throw new ServiceException(UPDATING_ERROR, e);
         }
     }
 }

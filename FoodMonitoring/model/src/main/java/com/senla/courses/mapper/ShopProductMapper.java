@@ -3,7 +3,6 @@ package com.senla.courses.mapper;
 import com.senla.courses.dto.ShopProductDto;
 import com.senla.courses.model.ShopProduct;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -17,4 +16,5 @@ public interface ShopProductMapper {
     List<ShopProductDto> shopProductListToShoProductDtoList(List<ShopProduct> shopProducts);
 
     List<ShopProduct> shopProductDtoListToShoProductList(List<ShopProductDto> shopProductDtos);
+
 }

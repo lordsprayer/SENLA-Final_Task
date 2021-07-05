@@ -5,6 +5,7 @@ import com.senla.courses.mapper.ShopMapper;
 import com.senla.courses.model.Shop;
 import com.senla.courses.repository.ShopRepository;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.couses.api.exception.ServiceException;
 import com.senla.couses.api.service.IShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,7 +32,7 @@ public class ShopService extends ConstantUtil implements IShopService {
             return mapper.shopListToShopDtoList(shops);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -42,7 +43,7 @@ public class ShopService extends ConstantUtil implements IShopService {
             return mapper.shopToShopDto(shop);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -53,7 +54,7 @@ public class ShopService extends ConstantUtil implements IShopService {
             shopRepository.save(shop);
         } catch (Exception e){
             log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            throw new ServiceException(SAVING_ERROR, e);
         }
     }
 
@@ -64,7 +65,7 @@ public class ShopService extends ConstantUtil implements IShopService {
             shopRepository.delete(shop);
         }  catch (Exception e){
             log.log(Level.WARN, DELETING_ERROR);
-            throw e;
+            throw new ServiceException(DELETING_ERROR, e);
         }
     }
 
@@ -77,7 +78,7 @@ public class ShopService extends ConstantUtil implements IShopService {
             shopRepository.save(shop);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
-            throw e;
+            throw new ServiceException(UPDATING_ERROR, e);
         }
     }
 }

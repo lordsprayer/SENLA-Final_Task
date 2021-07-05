@@ -4,6 +4,7 @@ import com.senla.courses.model.Role;
 import com.senla.courses.model.User;
 import com.senla.courses.repository.UserRepository;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.couses.api.exception.ServiceException;
 import com.senla.couses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,13 +27,14 @@ public class UserService extends ConstantUtil implements IUserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+
     @Override
     public List<User> getAllUsers() {
         try {
             return userRepository.findAll();
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -42,7 +44,7 @@ public class UserService extends ConstantUtil implements IUserService {
             return userRepository.getById(id);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
-            throw e;
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 
@@ -60,16 +62,21 @@ public class UserService extends ConstantUtil implements IUserService {
             return true;
         } catch (Exception e) {
             log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            throw new ServiceException(SAVING_ERROR, e);
         }
     }
 
     @Override
     public void deleteUser(Integer id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-        } else {
-            log.log(Level.WARN, SEARCH_ERROR);
+        try {
+            if (userRepository.findById(id).isPresent()) {
+                userRepository.deleteById(id);
+            } else {
+                log.log(Level.WARN, SEARCH_ERROR);
+            }
+        } catch (Exception e) {
+            log.log(Level.WARN, DELETING_ERROR);
+            throw new ServiceException(DELETING_ERROR, e);
         }
     }
 
@@ -84,19 +91,24 @@ public class UserService extends ConstantUtil implements IUserService {
             userFromDB.setPhone(user.getPhone());
             userRepository.save(userFromDB);
         } catch (Exception e) {
-            log.log(Level.WARN, SAVING_ERROR);
-            throw e;
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw new ServiceException(UPDATING_ERROR, e);
         }
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userRepository.findUserByLogin(login);
+        try {
+            User user = userRepository.findUserByLogin(login);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+
+            return user;
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new ServiceException(SEARCH_ERROR, e);
         }
-
-        return user;
     }
 }

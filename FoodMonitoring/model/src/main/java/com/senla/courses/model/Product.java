@@ -28,4 +28,10 @@ public class Product {
         this.name = name;
         this.category = category;
     }
+
+    public Product(Integer id, String name, Category category) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+    }
 }
