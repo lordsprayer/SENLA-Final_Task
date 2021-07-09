@@ -1,6 +1,6 @@
 package com.senla.courses.exception;
 
-import com.senla.couses.api.exception.ServiceException;
+import com.senla.courses.api.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

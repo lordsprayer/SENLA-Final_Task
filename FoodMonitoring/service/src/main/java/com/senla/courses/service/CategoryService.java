@@ -5,8 +5,8 @@ import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.model.Category;
 import com.senla.courses.repository.CategoryRepository;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.couses.api.exception.ServiceException;
-import com.senla.couses.api.service.ICategoryService;
+import com.senla.courses.api.exception.ServiceException;
+import com.senla.courses.api.service.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -14,7 +14,6 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 
 @Service

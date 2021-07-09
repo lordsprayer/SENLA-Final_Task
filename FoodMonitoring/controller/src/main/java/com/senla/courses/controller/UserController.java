@@ -1,7 +1,7 @@
 package com.senla.courses.controller;
 
 import com.senla.courses.model.User;
-import com.senla.couses.api.service.IUserService;
+import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;

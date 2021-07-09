@@ -1,12 +1,7 @@
-import com.senla.courses.dto.CategoryDto;
 import com.senla.courses.dto.ShopDto;
-import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.mapper.ShopMapper;
-import com.senla.courses.model.Category;
 import com.senla.courses.model.Shop;
-import com.senla.courses.repository.CategoryRepository;
 import com.senla.courses.repository.ShopRepository;
-import com.senla.courses.service.CategoryService;
 import com.senla.courses.service.ShopService;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,5 @@
-package com.senla.couses.api.service;
+package com.senla.courses.api.service;
 
-import com.senla.courses.dto.ProductDto;
 import com.senla.courses.dto.ShopDto;
 
 import java.util.List;

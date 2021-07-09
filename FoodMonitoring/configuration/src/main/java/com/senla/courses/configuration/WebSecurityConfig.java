@@ -1,6 +1,6 @@
 package com.senla.courses.configuration;
 
-import com.senla.couses.api.service.IUserService;
+import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

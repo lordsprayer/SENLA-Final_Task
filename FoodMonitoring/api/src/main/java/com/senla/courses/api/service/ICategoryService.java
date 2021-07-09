@@ -1,4 +1,4 @@
-package com.senla.couses.api.service;
+package com.senla.courses.api.service;
 
 import com.senla.courses.dto.CategoryDto;
 

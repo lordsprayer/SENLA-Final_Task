@@ -5,7 +5,7 @@ import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ShopProductDto;
-import com.senla.couses.api.service.IShopProductService;
+import com.senla.courses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;

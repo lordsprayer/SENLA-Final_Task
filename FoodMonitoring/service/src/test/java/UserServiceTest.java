@@ -8,12 +8,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,13 +26,9 @@ public class UserServiceTest {
             "123", "+375447335435");
     private final User userThree = new User(3, "Дмитрий", "Смирнов", "user3",
             "password3", "+375336985474");
-    private final User userFour = new User(1, "Александр", "Тихонов", "user1",
-            "$2a$10$uLvgKfitTsg1rKQ.tMuqyevA8SmkzZ9sE6CLPaZaUI5w6rfLa055m", "+375297769755");
 
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @InjectMocks
     private UserService userService;
 
@@ -86,12 +82,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUserTest() {
-        when(userRepository.getById(1)).thenReturn(userOne);
-        when(bCryptPasswordEncoder.encode("123")).thenReturn("123");
+    public void loadUserByUsernameIfUserNotFoundTest() {
+        when(userRepository.findUserByLogin("login")).thenReturn(null);
 
-        userService.updateUser(userFour);
-
-        verify(userRepository, times(1)).save(userFour);
+        Throwable thrown = assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("login"));
+        assertNotNull(thrown.getMessage());
     }
 }

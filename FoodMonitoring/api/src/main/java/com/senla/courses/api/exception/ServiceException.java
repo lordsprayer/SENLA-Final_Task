@@ -1,4 +1,4 @@
-package com.senla.couses.api.exception;
+package com.senla.courses.api.exception;
 
 public class ServiceException extends RuntimeException{
 

@@ -4,8 +4,8 @@ import com.senla.courses.model.Role;
 import com.senla.courses.model.User;
 import com.senla.courses.repository.UserRepository;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.couses.api.exception.ServiceException;
-import com.senla.couses.api.service.IUserService;
+import com.senla.courses.api.exception.ServiceException;
+import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -98,7 +98,6 @@ public class UserService extends ConstantUtil implements IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        try {
             User user = userRepository.findUserByLogin(login);
 
             if (user == null) {
@@ -106,9 +105,6 @@ public class UserService extends ConstantUtil implements IUserService {
             }
 
             return user;
-        } catch (Exception e) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw new ServiceException(SEARCH_ERROR, e);
-        }
+
     }
 }

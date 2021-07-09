@@ -1,7 +1,7 @@
 package com.senla.courses.controller;
 
 import com.senla.courses.dto.ShopDto;
-import com.senla.couses.api.service.IShopService;
+import com.senla.courses.api.service.IShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;

@@ -1,4 +1,3 @@
-import com.senla.courses.dto.CategoryDto;
 import com.senla.courses.dto.ProductDto;
 import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.mapper.ProductMapper;
@@ -6,7 +5,6 @@ import com.senla.courses.model.Category;
 import com.senla.courses.model.Product;
 import com.senla.courses.repository.CategoryRepository;
 import com.senla.courses.repository.ProductRepository;
-import com.senla.courses.service.CategoryService;
 import com.senla.courses.service.ProductService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,6 @@ public class ProductServiceTest {
 
     private final Category categoryOne = new Category(1, "овощи");
     private final Category categoryTwo = new Category(2, "фрукты");
-    private final Category categoryThree = new Category(3, "бакалея");
     private final Product productOne = new Product(1, "огурец",categoryOne);
     private final Product productTwo = new Product(2, "яблоко", categoryTwo);
     private final Product productThree = new Product(3, "апельсин", categoryTwo);
