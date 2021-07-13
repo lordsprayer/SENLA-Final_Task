@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,5 +64,19 @@ public class UserController {
     public ResponseEntity<UserDetails> getUserByUsername(@RequestParam String username) {
         log.log(Level.INFO, "Received get request: /users?username=" + username );
         return ResponseEntity.ok(userService.loadUserByUsername(username));
+    }
+
+    @PutMapping("/profile/update")
+    public ResponseEntity<Void> updateCurrentUser(@RequestBody User user) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        userService.updateCurrentUser(user, username);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<Void> setUserRoleAdmin(@PathVariable Integer id) {
+        userService.setUserRoleAdmin(id);
+        return ResponseEntity.accepted().build();
     }
 }

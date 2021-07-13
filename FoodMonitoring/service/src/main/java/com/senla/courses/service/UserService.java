@@ -15,8 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -97,14 +96,42 @@ public class UserService extends ConstantUtil implements IUserService {
     }
 
     @Override
+    public void updateCurrentUser(User user, String username) {
+        try {
+            User userFromDB = userRepository.findUserByLogin(username);
+            userFromDB.setName(user.getName());
+            userFromDB.setSurname(user.getSurname());
+            userFromDB.setLogin(user.getLogin());
+            userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userFromDB.setPhone(user.getPhone());
+            userRepository.save(userFromDB);
+        } catch (Exception e) {
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw new ServiceException(UPDATING_ERROR, e);
+        }
+    }
+
+    @Override
+    public void setUserRoleAdmin(Integer id) {
+        try {
+            User userFromDB = userRepository.getById(id);
+            Set<Role> roles = new HashSet<>() ;
+            roles.add(new Role(1, "ROLE_USER"));
+            roles.add(new Role(2, "ROLE_ADMIN"));
+            userFromDB.setRoles(roles);
+            userRepository.save(userFromDB);
+        } catch (Exception e) {
+            log.log(Level.WARN, SAVING_ERROR);
+            throw new ServiceException(SAVING_ERROR, e);
+        }
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-            User user = userRepository.findUserByLogin(login);
-
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found");
-            }
-
-            return user;
-
+        User user = userRepository.findUserByLogin(login);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
     }
 }

@@ -11,4 +11,8 @@ public interface IUserService extends UserDetailsService {
     boolean saveUser(User user);
     void deleteUser(Integer id);
     void updateUser(User user);
+
+    void updateCurrentUser(User user, String username);
+
+    void setUserRoleAdmin(Integer id);
 }
