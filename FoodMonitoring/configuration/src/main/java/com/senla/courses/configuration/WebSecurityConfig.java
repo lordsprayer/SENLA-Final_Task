@@ -4,6 +4,7 @@ import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,12 +21,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //todo подправить доступ, оставить гет методы для юзеров, остальное - админу
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/users/**").hasRole("ADMIN")
-                .antMatchers("/categories/**", "/products/**", "/shops/**", "/shopproducts/**").hasRole("USER")
+                .antMatchers("/users/**", "/categories/**", "/products/**", "/shops/**", "/shopproducts/**", "/profile/**", "/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/**").hasRole("USER")
+                .antMatchers("/profile/update").hasRole("USER")
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().disable();

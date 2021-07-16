@@ -13,55 +13,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-@RestController
 @RequiredArgsConstructor
 @Log4j2
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final IUserService userService;
 
-    @PostMapping("/registration")
-    public ResponseEntity<String> addUser(@RequestBody User user) {
-        log.log(Level.INFO, "Received post request: /registration");
-        if (!user.getPassword().equals(user.getPasswordConfirm())){
-            return ResponseEntity.ok("Passwords don't match");
-        }
-        if (!userService.saveUser(user)){
-            return ResponseEntity.ok("A user with this name already exists");
-        }
-
-        return ResponseEntity.ok("The user is registered successfully");
-    }
-
-    @GetMapping("/users")
+    @GetMapping()
     public ResponseEntity<List<User>> getAllUsers() {
         log.log(Level.INFO, "Received get request: /users");
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @DeleteMapping("users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         log.log(Level.INFO, "Received delete request: /users/" + id);
         userService.deleteUser(id);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/users")
+    @PutMapping()
     public ResponseEntity<Void> updateUser(@RequestBody User user) {
         log.log(Level.INFO, "Received update request: /users/");
         userService.updateUser(user);
         return ResponseEntity.accepted().build();
     }
+//todo убрать поиск юзера по id
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+//        log.log(Level.INFO, "Received get request: /users/" + id );
+//        return ResponseEntity.ok(userService.getUserById(id));
+//    }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        log.log(Level.INFO, "Received get request: /users/" + id );
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
-    @GetMapping("/profile")
-    public ResponseEntity<UserDetails> getUserByUsername(@RequestParam String username) {
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDetails> getUserByUsername(@PathVariable String username) {
         log.log(Level.INFO, "Received get request: /users?username=" + username );
         return ResponseEntity.ok(userService.loadUserByUsername(username));
     }
