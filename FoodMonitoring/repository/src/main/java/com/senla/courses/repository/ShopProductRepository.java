@@ -3,6 +3,8 @@ package com.senla.courses.repository;
 import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.model.ShopProduct;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Repository
 public interface ShopProductRepository extends JpaRepository<ShopProduct, Integer> {
+    Page<ShopProduct> findAll(Pageable pageable);
+
     @Query(value = "SELECT AVG(sp.cost) AS avgCost, " +
             "sp.date AS currentDate FROM shops_products AS sp " +
             "INNER JOIN products AS p ON p.id = sp.product_id " +

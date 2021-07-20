@@ -1,8 +1,6 @@
-import com.senla.courses.dto.CategoryDto;
 import com.senla.courses.dto.ProductDto;
 import com.senla.courses.dto.ShopDto;
 import com.senla.courses.dto.ShopProductDto;
-import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.mapper.ProductMapper;
 import com.senla.courses.mapper.ShopMapper;
 import com.senla.courses.mapper.ShopProductMapper;
@@ -22,6 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,13 +73,14 @@ public class ShopProductServiceTest {
         list.add(shopProductOne);
         list.add(shopProductTwo);
         list.add(shopProductThree);
+        Page<ShopProduct> page = new PageImpl<>(list);
 
-        when(shopProductRepository.findAll()).thenReturn(list);
+        when(shopProductRepository.findAll(PageRequest.of(0, 3))).thenReturn(page);
 
-        List<ShopProductDto> empList = shopProductService.getAllShopProducts();
+        List<ShopProductDto> empList = shopProductService.getAllShopProducts(PageRequest.of(0, 3));
 
         assertEquals(3, empList.size());
-        verify(shopProductRepository, times(1)).findAll();
+        verify(shopProductRepository, times(1)).findAll(PageRequest.of(0, 3));
     }
 
     @Test

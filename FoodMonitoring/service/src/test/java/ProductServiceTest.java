@@ -14,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
@@ -60,7 +63,7 @@ public class ProductServiceTest {
 
     @Test
     public void saveProductTest() {
-        when(categoryRepository.getById(1)).thenReturn(categoryOne);
+        when(categoryRepository.findById(1)).thenReturn(java.util.Optional.of(categoryOne));
 
         productService.saveProduct("огурец", 1);
 
@@ -91,12 +94,12 @@ public class ProductServiceTest {
         list.add(productTwo);
         list.add(productThree);
 
-        when(productRepository.findByCategory_name("фрукты")).thenReturn(list);
+        when(productRepository.findByCategory_name("фрукты", PageRequest.of(0, 2))).thenReturn(list);
 
-        List<ProductDto> empList = productService.getProductsByCategory("фрукты");
+        List<ProductDto> empList = productService.getProductsByCategory("фрукты", PageRequest.of(0, 2));
 
         assertEquals(2, empList.size());
-        verify(productRepository, times(1)).findByCategory_name("фрукты");
+        verify(productRepository, times(1)).findByCategory_name("фрукты", PageRequest.of(0, 2));
     }
 
     @Test
@@ -105,13 +108,14 @@ public class ProductServiceTest {
         list.add(productThree);
         list.add(productOne);
         list.add(productTwo);
+        Page<Product> page = new PageImpl<>(list);
 
-        when(productRepository.findAll(Sort.by(Sort.Direction.ASC, "name"))).thenReturn(list);
+        when(productRepository.findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.ASC, "name")))).thenReturn(page);
 
-        List<ProductDto> empList = productService.getSortProductsBy(Sort.by(Sort.Direction.ASC, "name"));
+        List<ProductDto> empList = productService.getSortProductsBy(PageRequest.of(0, 3, Sort.by(Sort.Direction.ASC, "name")));
 
         assertEquals(3, empList.size());
-        verify(productRepository, times(1)).findAll(Sort.by(Sort.Direction.ASC, "name"));
+        verify(productRepository, times(1)).findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.ASC, "name")));
 
 
 

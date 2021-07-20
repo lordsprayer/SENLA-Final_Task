@@ -5,6 +5,8 @@ import com.senla.courses.api.service.IShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +21,10 @@ public class ShopController {
     private final IShopService shopService;
 
     @GetMapping
-    public ResponseEntity<List<ShopDto>> getAllProducts() {
+    public ResponseEntity<List<ShopDto>> getAllProducts(@RequestParam Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /shops");
-        return ResponseEntity.ok(shopService.getAllShops());
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(shopService.getAllShops(pageable));
     }
 
     @GetMapping("/{id}")

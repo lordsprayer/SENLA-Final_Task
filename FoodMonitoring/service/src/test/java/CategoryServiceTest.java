@@ -11,6 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +45,14 @@ public class CategoryServiceTest {
         list.add(categoryOne);
         list.add(categoryTwo);
         list.add(categoryThree);
+        Page<Category> page = new PageImpl<>(list);
 
-        when(categoryRepository.findAll()).thenReturn(list);
+        when(categoryRepository.findAll(PageRequest.of(0, 3))).thenReturn(page);
 
-        List<CategoryDto> empList = categoryService.getAllCategories();
+        List<CategoryDto> empList = categoryService.getAllCategories(PageRequest.of(0, 3));
 
         assertEquals(3, empList.size());
-        verify(categoryRepository, times(1)).findAll();
+        verify(categoryRepository, times(1)).findAll(PageRequest.of(0, 3));
     }
 
     @Test

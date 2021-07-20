@@ -8,6 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
@@ -18,7 +21,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-
 
     private final User userOne = new User(1, "Александр", "Тихонов", "user1",
             "password", "+375297769755");
@@ -43,27 +45,14 @@ public class UserServiceTest {
         list.add(userOne);
         list.add(userTwo);
         list.add(userThree);
+        Page<User> page = new PageImpl<>(list);
 
-        when(userRepository.findAll()).thenReturn(list);
+        when(userRepository.findAll(PageRequest.of(0, 3))).thenReturn(page);
 
-        List<User> empList = userService.getAllUsers();
+        List<User> empList = userService.getAllUsers(PageRequest.of(0, 3));
 
         assertEquals(3, empList.size());
-        verify(userRepository, times(1)).findAll();
-    }
-
-    @Test
-    public void getUserByIdTest() {
-        when(userRepository.getById(1)).thenReturn(userOne);
-
-        User user = userService.getUserById(1);
-
-        assertEquals(1, user.getId());
-        assertEquals("Александр", user.getName());
-        assertEquals("Тихонов", user.getSurname());
-        assertEquals("user1", user.getLogin());
-        assertEquals("password", user.getPassword());
-        assertEquals("+375297769755", user.getPhone());
+        verify(userRepository, times(1)).findAll(PageRequest.of(0, 3));
     }
 
     @Test

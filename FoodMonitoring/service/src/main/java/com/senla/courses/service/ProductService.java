@@ -14,11 +14,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,7 +48,7 @@ public class ProductService extends ConstantUtil implements IProductService {
     @Override
     public void saveProduct(String name, Integer categoryId) {
         try {
-            Category category = categoryRepository.getById(categoryId);
+            Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ServiceException(SEARCH_ERROR));
             Product product = new Product(name, category);
             productRepository.save(product);
         } catch (Exception e){
@@ -79,9 +82,9 @@ public class ProductService extends ConstantUtil implements IProductService {
     }
 
     @Override
-    public List<ProductDto> getProductsByCategory(String category) {
+    public List<ProductDto> getProductsByCategory(String category, Pageable pageable) {
         try {
-            List<Product> products = productRepository.findByCategory_name(category);
+            List<Product> products = productRepository.findByCategory_name(category, pageable);
             return mapper.productListToProductDtoList(products);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
@@ -90,10 +93,10 @@ public class ProductService extends ConstantUtil implements IProductService {
     }
 
     @Override
-    public List<ProductDto> getSortProductsBy(Sort sort) {
+    public List<ProductDto> getSortProductsBy(Pageable pageable) {
         try {
-            List<Product> products = productRepository.findAll(sort);
-            return mapper.productListToProductDtoList(products);
+            Page<Product> products = productRepository.findAll(pageable);
+            return products.getContent().stream().map(mapper::productToProductDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw new ServiceException(SEARCH_ERROR, e);

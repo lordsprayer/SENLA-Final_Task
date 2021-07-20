@@ -9,6 +9,8 @@ import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,19 +31,10 @@ public class UserService extends ConstantUtil implements IUserService {
 
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(Pageable pageable) {
         try {
-            return userRepository.findAll();
-        } catch (Exception e) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw new ServiceException(SEARCH_ERROR, e);
-        }
-    }
-
-    @Override
-    public User getUserById(Integer id) {
-        try {
-            return userRepository.getById(id);
+            Page<User> users = userRepository.findAll(pageable);
+            return new ArrayList<>(users.getContent());
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw new ServiceException(SEARCH_ERROR, e);

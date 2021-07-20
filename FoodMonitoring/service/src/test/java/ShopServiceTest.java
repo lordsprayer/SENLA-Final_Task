@@ -11,6 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +45,14 @@ public class ShopServiceTest {
         list.add(shopOne);
         list.add(shopTwo);
         list.add(shopThree);
+        Page<Shop> page = new PageImpl<>(list);
 
-        when(shopRepository.findAll()).thenReturn(list);
+        when(shopRepository.findAll(PageRequest.of(0, 3))).thenReturn(page);
 
-        List<ShopDto> empList = shopService.getAllShops();
+        List<ShopDto> empList = shopService.getAllShops(PageRequest.of(0, 3));
 
         assertEquals(3, empList.size());
-        verify(shopRepository, times(1)).findAll();
+        verify(shopRepository, times(1)).findAll(PageRequest.of(0, 3));
     }
 
     @Test

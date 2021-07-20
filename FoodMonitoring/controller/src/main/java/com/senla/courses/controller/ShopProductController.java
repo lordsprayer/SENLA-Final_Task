@@ -9,6 +9,8 @@ import com.senla.courses.api.service.IShopProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,9 +32,10 @@ public class ShopProductController {
     private final IShopProductService shopProductService;
 
     @GetMapping
-    public ResponseEntity<List<ShopProductDto>> getAllShopProducts() {
+    public ResponseEntity<List<ShopProductDto>> getAllShopProducts(@RequestParam Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /shopproducts");
-        return ResponseEntity.ok(shopProductService.getAllShopProducts());
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(shopProductService.getAllShopProducts(pageable));
     }
 
     @GetMapping("/{id}")
@@ -77,7 +80,7 @@ public class ShopProductController {
     }
 
     @PostMapping(value = "/data", consumes = "multipart/form-data")
-    public ResponseEntity<Void> postShoProductFromFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Void> saveShopProductsFromFile(@RequestParam("file") MultipartFile file) throws IOException {
         log.log(Level.INFO, "Received post request from file " + file.getOriginalFilename() + ": /shopproducts/data");
         if (file.isEmpty()) {
             return ResponseEntity.notFound().build();

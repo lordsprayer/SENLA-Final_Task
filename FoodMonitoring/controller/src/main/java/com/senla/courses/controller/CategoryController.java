@@ -1,10 +1,12 @@
 package com.senla.courses.controller;
 
-import com.senla.courses.dto.CategoryDto;
 import com.senla.courses.api.service.ICategoryService;
+import com.senla.courses.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +21,10 @@ public class CategoryController {
     private final ICategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+    public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /categories");
-        return ResponseEntity.ok(categoryService.getAllCategories());
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(categoryService.getAllCategories(pageable));
     }
 
     @GetMapping("/{id}")

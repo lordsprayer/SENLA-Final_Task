@@ -5,6 +5,8 @@ import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,9 +24,10 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam Integer page, Integer size) {
         log.log(Level.INFO, "Received get request: /users");
-        return ResponseEntity.ok(userService.getAllUsers());
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(userService.getAllUsers(pageable));
     }
 
     @DeleteMapping("/{id}")
@@ -40,12 +43,6 @@ public class UserController {
         userService.updateUser(user);
         return ResponseEntity.accepted().build();
     }
-//todo убрать поиск юзера по id
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-//        log.log(Level.INFO, "Received get request: /users/" + id );
-//        return ResponseEntity.ok(userService.getUserById(id));
-//    }
 
     @GetMapping("/{username}")
     public ResponseEntity<UserDetails> getUserByUsername(@PathVariable String username) {

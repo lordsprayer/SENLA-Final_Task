@@ -11,10 +11,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,10 +29,10 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
     private final CategoryMapper mapper = Mappers.getMapper(CategoryMapper.class);
 
     @Override
-    public List<CategoryDto> getAllCategories() {
+    public List<CategoryDto> getAllCategories(Pageable pageable) {
         try {
-            List<Category> categories = categoryRepository.findAll();
-            return mapper.categoryListToCategoryDtoList(categories);
+            Page<Category> categories = categoryRepository.findAll(pageable);
+            return categories.getContent().stream().map(mapper::categoryToCategoryDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw new ServiceException(SEARCH_ERROR, e);

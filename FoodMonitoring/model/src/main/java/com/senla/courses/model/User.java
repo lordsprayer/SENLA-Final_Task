@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
