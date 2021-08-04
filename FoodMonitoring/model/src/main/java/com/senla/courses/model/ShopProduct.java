@@ -33,6 +33,4 @@ public class ShopProduct {
         this.cost = cost;
         this.date = date;
     }
-
-
 }

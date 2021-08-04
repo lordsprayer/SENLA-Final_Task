@@ -1,17 +1,17 @@
 package com.senla.courses.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -83,4 +83,18 @@ public class User implements UserDetails {
         return getRoles();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId().equals(user.getId()) && Objects.equals(getName(), user.getName())
+                && Objects.equals(getSurname(), user.getSurname()) && getLogin().equals(user.getLogin())
+                && getPassword().equals(user.getPassword()) && Objects.equals(getPhone(), user.getPhone());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSurname(), getLogin(), getPassword(), getPhone());
+    }
 }
