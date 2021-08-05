@@ -1,11 +1,11 @@
 package com.senla.courses.controller;
 
-import com.opencsv.bean.CsvToBeanBuilder;
 import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.api.IPriceDynamics;
+import com.senla.courses.api.service.IShopProductService;
 import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ShopProductDto;
-import com.senla.courses.api.service.IShopProductService;
+import com.senla.courses.util.CsvParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -15,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,6 +27,7 @@ import java.util.List;
 public class ShopProductController {
 
     private final IShopProductService shopProductService;
+    private final CsvParser csvParser;
 
     @GetMapping
     public ResponseEntity<List<ShopProductDto>> getAllShopProducts(@RequestParam Integer page, Integer size) {
@@ -84,13 +82,8 @@ public class ShopProductController {
         if (file.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
-            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                List<ShopProductCsv> shopProductCsvList = new CsvToBeanBuilder<ShopProductCsv>(reader)
-                        .withType(ShopProductCsv.class)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .build().parse();
-                shopProductService.saveFromShopProductCsv(shopProductCsvList);
-            }
+            List<ShopProductCsv> shopProductCsvList = csvParser.parseCsv(file);
+            shopProductService.saveFromShopProductCsv(shopProductCsvList);
             return ResponseEntity.noContent().build();
         }
     }
