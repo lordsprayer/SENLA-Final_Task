@@ -31,12 +31,9 @@ public interface IShopProductService {
     /**
      * Saves the shopproduct to the database
      *
-     * @param shopId shop id
-     * @param productId product id
-     * @param date date of receipt of the product in the store
-     * @param cost the cost of the product in the shop
+     * @param shopProductCsv
      */
-    void saveShopProduct(Integer shopId, Integer productId, LocalDate date, Double cost);
+    void saveShopProduct(ShopProductCsv shopProductCsv);
 
     /**
      * Deletes a shopproduct from the database

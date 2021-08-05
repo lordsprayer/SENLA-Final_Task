@@ -1,3 +1,4 @@
+import com.senla.courses.csv.ShopProductCsv;
 import com.senla.courses.dto.ProductDto;
 import com.senla.courses.dto.ShopDto;
 import com.senla.courses.dto.ShopProductDto;
@@ -52,6 +53,7 @@ public class ShopProductServiceTest {
     private final ShopProduct shopProductThree = new ShopProduct(3, shopThree, productThree, 1.9, LocalDate.of(2021, 7, 10));
     private final ShopProduct shopProductFour = new ShopProduct(shopOne, productOne, 1.7, LocalDate.of(2021, 7, 10));
     private final ShopProductDto shopProductDto = new ShopProductDto(2, shopDto, productDto, 1.7, LocalDate.of(2021, 7, 10));
+    private final ShopProductCsv shopProductCsv = new ShopProductCsv(1, 1, 1.7, "2021-07-10");
 
     @Mock
     private ShopRepository shopRepository;
@@ -101,7 +103,7 @@ public class ShopProductServiceTest {
         when(shopRepository.getById(1)).thenReturn(shopOne);
         when(productRepository.getById(1)).thenReturn(productOne);
 
-        shopProductService.saveShopProduct(1, 1, LocalDate.of(2021, 7, 10), 1.7);
+        shopProductService.saveShopProduct(shopProductCsv);
 
         verify(shopProductRepository, times(1)).save(shopProductFour);
     }

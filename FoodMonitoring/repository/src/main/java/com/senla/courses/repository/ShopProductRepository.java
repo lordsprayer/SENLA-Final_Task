@@ -22,7 +22,7 @@ public interface ShopProductRepository extends JpaRepository<ShopProduct, Intege
 //            "INNER JOIN products AS p ON p.id = sp.product_id " +
 //            "WHERE p.id = ?1 GROUP BY currentDate", nativeQuery = true)
     @Query(value = "SELECT AVG(sp.cost) AS avgCost, sp.date AS currentDate FROM ShopProduct sp " +
-            "JOIN sp.product p WHERE p.id = :id GROUP BY currentDate ")
+            "JOIN sp.product p WHERE p.id = :id GROUP BY currentDate ORDER BY currentDate")
     List<IPriceDynamics> avgProductCostByDate(@Param("id")Integer id);
 
 //    @Query(value = "SELECT p.name AS productName, sp_a.cost AS firstCost, " +

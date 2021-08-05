@@ -16,6 +16,7 @@ import com.senla.courses.repository.ShopRepository;
 import com.senla.courses.util.ConstantUtil;
 import com.senla.courses.api.exception.ServiceException;
 import com.senla.courses.api.service.IShopProductService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -64,10 +65,12 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
     }
 
     @Override
-    public void saveShopProduct(Integer shopId, Integer productId, LocalDate date, Double cost) {
+    public void saveShopProduct(ShopProductCsv shopProductCsv) {
         try {
-            Shop shop = shopRepository.getById(shopId);
-            Product product = productRepository.getById(productId);
+            Shop shop = shopRepository.getById(shopProductCsv.getShop());
+            Product product = productRepository.getById(shopProductCsv.getProduct());
+            Double cost = shopProductCsv.getCost();
+            LocalDate date = LocalDate.parse(shopProductCsv.getDate());
             ShopProduct shopProduct = new ShopProduct(shop, product, cost, date);
             shopProductRepository.save(shopProduct);
         } catch (Exception e){

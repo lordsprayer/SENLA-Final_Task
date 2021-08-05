@@ -45,10 +45,9 @@ public class ShopProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createShopProduct(@RequestParam Integer shop, Integer product, String date, Double cost){
+    public ResponseEntity<Void> createShopProduct(@RequestBody ShopProductCsv shopProductCsv){
         log.log(Level.INFO, "Received post request: /shopproducts");
-        LocalDate localDate = LocalDate.parse(date);
-        shopProductService.saveShopProduct(shop, product, localDate, cost);
+        shopProductService.saveShopProduct(shopProductCsv);
         return ResponseEntity.noContent().build();
     }
 
