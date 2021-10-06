@@ -1,5 +1,8 @@
 package com.senla.courses.api.service;
 
+import com.senla.courses.dto.UserDtoInput;
+import com.senla.courses.dto.UserDtoOutput;
+import com.senla.courses.dto.UserDtoUpdate;
 import com.senla.courses.model.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +17,16 @@ public interface IUserService extends UserDetailsService {
      *
      * @return list of all users
      */
-    List<User> getAllUsers(Pageable pageable);
+    List<UserDtoOutput> getAllUsers(Pageable pageable);
+
+    /**
+     * Returns true, if the user is successfully saved in the database
+     *
+     * @param id id of the desired user
+     *
+     * @return true, if the user is successfully saved in the database
+     */
+    UserDtoOutput getUserById(Integer id);
 
     /**
      * Returns true, if the user is successfully saved in the database
@@ -23,7 +35,7 @@ public interface IUserService extends UserDetailsService {
      *
      * @return true, if the user is successfully saved in the database
      */
-    boolean saveUser(User user);
+    boolean saveUser(UserDtoInput user);
 
     /**
      * Deletes a user from the database
@@ -37,7 +49,7 @@ public interface IUserService extends UserDetailsService {
      *
      * @param user updated user ({@link User})
      */
-    void updateUser(User user);
+    void updateUser(Integer id, UserDtoUpdate user);
 
     /**
      * Updates the data of the authenticated user
@@ -45,7 +57,7 @@ public interface IUserService extends UserDetailsService {
      * @param user authenticated user
      * @param username username of authenticated user
      */
-    void updateCurrentUser(User user, String username);
+    void updateCurrentUser(UserDtoUpdate user, String username);
 
     /**
      * Gives the user administrator rights

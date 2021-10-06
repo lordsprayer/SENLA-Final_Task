@@ -83,9 +83,10 @@ public class ProductServiceTest {
     public void updateProductTest() {
         when(productRepository.getById(2)).thenReturn(productTwo);
 
-        productService.updateProduct(productDto);
+        productService.updateProduct(2, productDto);
 
-        verify(productRepository, times(1)).save(Mappers.getMapper(ProductMapper.class).productDtoToProduct(productDto));
+        verify(productRepository, times(1))
+                .save(Mappers.getMapper(ProductMapper.class).productDtoToProduct(productDto));
     }
 
     @Test

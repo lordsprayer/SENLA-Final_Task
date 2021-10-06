@@ -1,5 +1,6 @@
 package com.senla.courses.service;
 
+import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.dto.ProductDto;
 import com.senla.courses.mapper.CategoryMapper;
 import com.senla.courses.mapper.ProductMapper;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class ProductService extends ConstantUtil implements IProductService {
+public class ProductService implements IProductService, ConstantUtil {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -69,9 +70,9 @@ public class ProductService extends ConstantUtil implements IProductService {
     }
 
     @Override
-    public void updateProduct(ProductDto productDto) {
+    public void updateProduct(Integer id, ProductDto productDto) {
         try {
-            Product product = productRepository.getById(productDto.getId());
+            Product product = productRepository.getById(id);
             product.setName(productDto.getName());
             product.setCategory(Mappers.getMapper(CategoryMapper.class).categoryDtoToCategory(productDto.getCategory()));
             productRepository.save(product);
@@ -97,6 +98,16 @@ public class ProductService extends ConstantUtil implements IProductService {
         try {
             Page<Product> products = productRepository.findAll(pageable);
             return products.getContent().stream().map(mapper::productToProductDto).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new ServiceException(SEARCH_ERROR, e);
+        }
+    }
+
+    @Override
+    public List<IPriceDynamics> getPriceDynamics(Integer id) {
+        try {
+            return productRepository.avgProductCostByDate(id);
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw new ServiceException(SEARCH_ERROR, e);

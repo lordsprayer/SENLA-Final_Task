@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -14,11 +13,13 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Integer id;
     @Column(name = "name")
     String name;
@@ -30,18 +31,15 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "phone")
     String phone;
-    @Transient
-    private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    public User(String name, String surname, String login, String password, String passwordConfirm, String phone) {
+    public User(String name, String surname, String login, String password, String phone) {
         this.name = name;
         this.surname = surname;
         this.login = login;
         this.password = password;
         this.phone = phone;
-        this.passwordConfirm = passwordConfirm;
     }
 
     public User(Integer id, String name, String surname, String login, String password, String phone) {
@@ -81,20 +79,5 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId().equals(user.getId()) && Objects.equals(getName(), user.getName())
-                && Objects.equals(getSurname(), user.getSurname()) && getLogin().equals(user.getLogin())
-                && getPassword().equals(user.getPassword()) && Objects.equals(getPhone(), user.getPhone());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getSurname(), getLogin(), getPassword(), getPhone());
     }
 }

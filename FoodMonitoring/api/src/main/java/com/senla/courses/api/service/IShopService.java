@@ -1,8 +1,10 @@
 package com.senla.courses.api.service;
 
+import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.dto.ShopDto;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IShopService {
@@ -41,7 +43,20 @@ public interface IShopService {
     /**
      * Updates a shop in the database
      *
+     * @param id id of updated shop
      * @param shopDto updated shop (in the {@link ShopDto} format)
      */
-    void updateShop(ShopDto shopDto);
+    void updateShop(Integer id,ShopDto shopDto);
+
+
+    /**
+     * Returns list that compares all matching products in 2 stores on a desired date
+     *
+     * @param date desired date
+     * @param shop1  first shop id
+     * @param shop2 second shop id
+     *
+     * @return list that compares all matching products in 2 stores on a desired date
+     */
+    List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2);
 }

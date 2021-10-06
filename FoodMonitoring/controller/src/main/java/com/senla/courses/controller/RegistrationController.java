@@ -1,7 +1,7 @@
 package com.senla.courses.controller;
 
 import com.senla.courses.api.service.IUserService;
-import com.senla.courses.model.User;
+import com.senla.courses.dto.UserDtoInput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -20,7 +20,7 @@ public class RegistrationController {
     private final IUserService userService;
 
     @PostMapping()
-    public ResponseEntity<String> addUser(@RequestBody User user) {
+    public ResponseEntity<String> addUser(@RequestBody UserDtoInput user) {
         log.log(Level.INFO, "Received post request: /registration");
         if (!user.getPassword().equals(user.getPasswordConfirm())){
             return ResponseEntity.ok("Passwords don't match");

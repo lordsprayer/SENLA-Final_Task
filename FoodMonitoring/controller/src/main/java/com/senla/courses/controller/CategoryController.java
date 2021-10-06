@@ -2,6 +2,7 @@ package com.senla.courses.controller;
 
 import com.senla.courses.api.service.ICategoryService;
 import com.senla.courses.dto.CategoryDto;
+import com.senla.courses.util.PageCheck;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -19,10 +20,12 @@ import java.util.List;
 public class CategoryController {
 
     private final ICategoryService categoryService;
+    private final PageCheck pageCheck;
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /categories");
+        size = pageCheck.checkPage(size);
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(categoryService.getAllCategories(pageable));
     }
@@ -47,10 +50,10 @@ public class CategoryController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping()
-    public ResponseEntity<Void> updateCategory(@RequestBody CategoryDto categoryDto){
-        log.log(Level.INFO, "Received put request: /categories");
-        categoryService.updateCategory(categoryDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateCategory(@PathVariable Integer id, @RequestBody CategoryDto categoryDto){
+        log.log(Level.INFO, "Received put request: /categories/" + id);
+        categoryService.updateCategory(id, categoryDto);
         return ResponseEntity.noContent().build();
     }
 }

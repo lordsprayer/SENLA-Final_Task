@@ -41,7 +41,8 @@ public interface ICategoryService {
     /**
      * Updates a category in the database
      *
+     * @param id id of updated category
      * @param categoryDto updated category (in the {@link CategoryDto} format)
      */
-    void updateCategory(CategoryDto categoryDto);
+    void updateCategory(Integer id,CategoryDto categoryDto);
 }

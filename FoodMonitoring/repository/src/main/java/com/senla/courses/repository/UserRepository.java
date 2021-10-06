@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Page<User> findAll(Pageable pageable);
     User findUserByLogin(String login);
+    User getById(Integer id);
 }

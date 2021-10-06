@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class CategoryService extends ConstantUtil implements ICategoryService {
+public class CategoryService implements ICategoryService, ConstantUtil {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper mapper = Mappers.getMapper(CategoryMapper.class);
@@ -73,9 +73,9 @@ public class CategoryService extends ConstantUtil implements ICategoryService {
     }
 
     @Override
-    public void updateCategory(CategoryDto categoryDto) {
+    public void updateCategory(Integer id, CategoryDto categoryDto) {
         try {
-            Category category = categoryRepository.getById(categoryDto.getId());
+            Category category = categoryRepository.getById(id);
             category.setName(categoryDto.getName());
             categoryRepository.save(category);
         } catch (Exception e){

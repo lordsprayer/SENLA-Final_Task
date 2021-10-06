@@ -1,5 +1,6 @@
 package com.senla.courses.service;
 
+import com.senla.courses.api.IPriceComparison;
 import com.senla.courses.dto.ShopDto;
 import com.senla.courses.mapper.ShopMapper;
 import com.senla.courses.model.Shop;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class ShopService extends ConstantUtil implements IShopService {
+public class ShopService implements IShopService, ConstantUtil {
 
     private final ShopRepository shopRepository;
     private final ShopMapper mapper = Mappers.getMapper(ShopMapper.class);
@@ -73,15 +75,25 @@ public class ShopService extends ConstantUtil implements IShopService {
     }
 
     @Override
-    public void updateShop(ShopDto shopDto) {
+    public void updateShop(Integer id, ShopDto shopDto) {
         try {
-            Shop shop = shopRepository.getById(shopDto.getId());
+            Shop shop = shopRepository.getById(id);
             shop.setName(shopDto.getName());
             shop.setAddress(shopDto.getAddress());
             shopRepository.save(shop);
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
             throw new ServiceException(UPDATING_ERROR, e);
+        }
+    }
+
+    @Override
+    public List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2) {
+        try {
+            return shopRepository.comparisonPricesByShops(date, shop1, shop2);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 }

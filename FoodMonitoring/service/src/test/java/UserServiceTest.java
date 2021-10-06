@@ -1,3 +1,5 @@
+import com.senla.courses.dto.UserDtoInput;
+import com.senla.courses.dto.UserDtoOutput;
 import com.senla.courses.model.User;
 import com.senla.courses.repository.UserRepository;
 import com.senla.courses.service.UserService;
@@ -28,6 +30,8 @@ public class UserServiceTest {
             "123", "+375447335435");
     private final User userThree = new User(3, "Дмитрий", "Смирнов", "user3",
             "password3", "+375336985474");
+    private final UserDtoInput userInput = new UserDtoInput(1, "Александр", "Тихонов", "user1",
+            "password", "+375297769755");
 
     @Mock
     private UserRepository userRepository;
@@ -49,7 +53,7 @@ public class UserServiceTest {
 
         when(userRepository.findAll(PageRequest.of(0, 3))).thenReturn(page);
 
-        List<User> empList = userService.getAllUsers(PageRequest.of(0, 3));
+        List<UserDtoOutput> empList = userService.getAllUsers(PageRequest.of(0, 3));
 
         assertEquals(3, empList.size());
         verify(userRepository, times(1)).findAll(PageRequest.of(0, 3));
@@ -57,7 +61,7 @@ public class UserServiceTest {
 
     @Test
     public void saveUserTest() {
-        userService.saveUser(userOne);
+        userService.saveUser(userInput);
 
         verify(userRepository, times(1)).save(userOne);
     }

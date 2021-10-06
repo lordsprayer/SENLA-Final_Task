@@ -45,29 +45,10 @@ public interface IShopProductService {
     /**
      * Updates a shopproduct in the database
      *
+     * @param id id of updated shopproducts
      * @param shopProductDto updated shopproduct (in the {@link ShopProductDto} format)
      */
-    void updateShopProduct(ShopProductDto shopProductDto);
-
-    /**
-     * Returns list containing the average product price for all stores by date
-     *
-     * @param id product id
-     *
-     * @return list containing the average product price for all stores by date
-     */
-    List<IPriceDynamics> getPriceDynamics(Integer id);
-
-    /**
-     * Returns list that compares all matching products in 2 stores on a desired date
-     *
-     * @param date desired date
-     * @param shop1  first shop id
-     * @param shop2 second shop id
-     *
-     * @return list that compares all matching products in 2 stores on a desired date
-     */
-    List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2);
+    void updateShopProduct(Integer id, ShopProductDto shopProductDto);
 
     /**
      * Saves list of shopproduct to the database

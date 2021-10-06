@@ -1,7 +1,9 @@
 package com.senla.courses.controller;
 
+import com.senla.courses.api.IPriceDynamics;
 import com.senla.courses.dto.ProductDto;
 import com.senla.courses.api.service.IProductService;
+import com.senla.courses.util.PageCheck;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ProductController {
 
     private final IProductService productService;
+    private final PageCheck pageCheck;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable Integer id){
@@ -41,16 +44,17 @@ public class ProductController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateProduct(@RequestBody ProductDto productDto){
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable Integer id, @RequestBody ProductDto productDto){
         log.log(Level.INFO, "Received put request: /products");
-        productService.updateProduct(productDto);
+        productService.updateProduct(id, productDto);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/category")
     public ResponseEntity<List<ProductDto>> getProductsByCategory(@RequestParam String category, Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /products");
+        size = pageCheck.checkPage(size);
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(productService.getProductsByCategory(category, pageable));
     }
@@ -58,7 +62,16 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDto>> getSortProducts(@RequestParam(defaultValue = "id") String param, Integer page, Integer size) {
         log.log(Level.INFO, "Received get all request: /products");
+        size = pageCheck.checkPage(size);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, param));
         return ResponseEntity.ok(productService.getSortProductsBy(pageable));
     }
+
+    @GetMapping("/{id}/dynamics")
+    public ResponseEntity<List<IPriceDynamics>> getPriceDynamicsByProductId(@PathVariable Integer id) {
+        log.log(Level.INFO, "Received get all request: /products/" + id + "dynamics");
+        return ResponseEntity.ok(productService.getPriceDynamics(id));
+    }
+
+    //todo добавить в каком-то виде сравнение по всем магазинам одного либо группы продуктов
 }

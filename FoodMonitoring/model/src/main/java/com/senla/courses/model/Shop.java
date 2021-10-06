@@ -11,11 +11,13 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "shops")
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Integer id;
     @Column(name = "name")
     private String name;
@@ -33,19 +35,5 @@ public class Shop {
         this.id = id;
         this.name = name;
         this.address = address;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Shop)) return false;
-        Shop shop = (Shop) o;
-        return getId().equals(shop.getId()) && Objects.equals(getName(), shop.getName())
-                && Objects.equals(getAddress(), shop.getAddress());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getAddress());
     }
 }

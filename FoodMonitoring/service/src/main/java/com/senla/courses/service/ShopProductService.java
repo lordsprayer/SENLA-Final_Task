@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class ShopProductService extends ConstantUtil implements IShopProductService {
+public class ShopProductService implements IShopProductService, ConstantUtil {
 
     private final ShopProductRepository shopProductRepository;
     private final ShopRepository shopRepository;
@@ -91,9 +91,9 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
     }
 
     @Override
-    public void updateShopProduct(ShopProductDto shopProductDto) {
+    public void updateShopProduct(Integer id, ShopProductDto shopProductDto) {
         try {
-            ShopProduct shopProduct = shopProductRepository.getById(shopProductDto.getId());
+            ShopProduct shopProduct = shopProductRepository.getById(id);
             shopProduct.setShop(Mappers.getMapper(ShopMapper.class).shopDtoToShop(shopProductDto.getShop()));
             shopProduct.setProduct(Mappers.getMapper(ProductMapper.class).productDtoToProduct(shopProductDto.getProduct()));
             shopProduct.setCost(shopProductDto.getCost());
@@ -102,26 +102,6 @@ public class ShopProductService extends ConstantUtil implements IShopProductServ
         } catch (Exception e){
             log.log(Level.WARN, UPDATING_ERROR);
             throw new ServiceException(UPDATING_ERROR, e);
-        }
-    }
-
-    @Override
-    public List<IPriceDynamics> getPriceDynamics(Integer id) {
-        try {
-            return shopProductRepository.avgProductCostByDate(id);
-        } catch (Exception e) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw new ServiceException(SEARCH_ERROR, e);
-        }
-    }
-
-    @Override
-    public List<IPriceComparison> getPriceComparison(LocalDate date, Integer shop1, Integer shop2) {
-        try {
-            return shopProductRepository.comparisonPricesByShops(date, shop1, shop2);
-        } catch (Exception e) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw new ServiceException(SEARCH_ERROR, e);
         }
     }
 

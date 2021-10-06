@@ -1,6 +1,12 @@
 package com.senla.courses.service;
 
+import com.senla.courses.dto.UserDtoInput;
+import com.senla.courses.dto.UserDtoOutput;
+import com.senla.courses.dto.UserDtoUpdate;
+import com.senla.courses.mapper.UserInputMapper;
+import com.senla.courses.mapper.UserOutputMapper;
 import com.senla.courses.model.Role;
+import com.senla.courses.model.Shop;
 import com.senla.courses.model.User;
 import com.senla.courses.repository.UserRepository;
 import com.senla.courses.util.ConstantUtil;
@@ -9,6 +15,7 @@ import com.senla.courses.api.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,17 +31,18 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
-public class UserService extends ConstantUtil implements IUserService {
+public class UserService implements IUserService, ConstantUtil {
 
     private final UserRepository userRepository;
+    private final UserInputMapper mapperInput = Mappers.getMapper(UserInputMapper.class);
+    private final UserOutputMapper mapperOutput = Mappers.getMapper(UserOutputMapper.class);
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-
     @Override
-    public List<User> getAllUsers(Pageable pageable) {
+    public List<UserDtoOutput> getAllUsers(Pageable pageable) {
         try {
             Page<User> users = userRepository.findAll(pageable);
-            return new ArrayList<>(users.getContent());
+            return users.getContent().stream().map(mapperOutput::userToUserDtoOutput).collect(Collectors.toList());
         } catch (Exception e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw new ServiceException(SEARCH_ERROR, e);
@@ -42,13 +50,24 @@ public class UserService extends ConstantUtil implements IUserService {
     }
 
     @Override
-    public boolean saveUser(User user) {
+    public UserDtoOutput getUserById(Integer id) {
         try {
-            User userFromDB = userRepository.findUserByLogin(user.getUsername());
+            User user = userRepository.getById(id);
+            return mapperOutput.userToUserDtoOutput(user);
+        } catch (Exception e) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new ServiceException(SEARCH_ERROR, e);
+        }
+    }
+
+    @Override
+    public boolean saveUser(UserDtoInput userDtoInput) {
+        try {
+            User userFromDB = userRepository.findUserByLogin(userDtoInput.getLogin());
             if (userFromDB != null) {
                 return false;
             }
-
+            User user = mapperInput.userDtoInputToUser(userDtoInput);
             user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userRepository.save(user);
@@ -74,13 +93,11 @@ public class UserService extends ConstantUtil implements IUserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(Integer id, UserDtoUpdate user) {
         try {
-            User userFromDB = userRepository.getById(user.getId());
+            User userFromDB = userRepository.getById(id);
             userFromDB.setName(user.getName());
             userFromDB.setSurname(user.getSurname());
-            userFromDB.setLogin(user.getLogin());
-            userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userFromDB.setPhone(user.getPhone());
             userRepository.save(userFromDB);
         } catch (Exception e) {
@@ -90,13 +107,11 @@ public class UserService extends ConstantUtil implements IUserService {
     }
 
     @Override
-    public void updateCurrentUser(User user, String username) {
+    public void updateCurrentUser(UserDtoUpdate user, String username) {
         try {
             User userFromDB = userRepository.findUserByLogin(username);
             userFromDB.setName(user.getName());
             userFromDB.setSurname(user.getSurname());
-            userFromDB.setLogin(user.getLogin());
-            userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userFromDB.setPhone(user.getPhone());
             userRepository.save(userFromDB);
         } catch (Exception e) {

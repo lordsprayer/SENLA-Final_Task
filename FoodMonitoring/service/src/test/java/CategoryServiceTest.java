@@ -85,7 +85,7 @@ public class CategoryServiceTest {
     public void updateCategoryTest() {
         when(categoryRepository.getById(2)).thenReturn(categoryTwo);
 
-        categoryService.updateCategory(categoryDto);
+        categoryService.updateCategory(2, categoryDto);
 
         verify(categoryRepository, times(1)).save(Mappers.getMapper(CategoryMapper.class).categoryDtoToCategory(categoryDto));
     }

@@ -121,7 +121,7 @@ public class ShopProductServiceTest {
     public void updateShopProductTest() {
         when(shopProductRepository.getById(2)).thenReturn(shopProductTwo);
 
-        shopProductService.updateShopProduct(shopProductDto);
+        shopProductService.updateShopProduct(2, shopProductDto);
 
         verify(shopProductRepository, times(1)).save(Mappers.getMapper(ShopProductMapper.class)
                 .shopProductDtoToShopProduct(shopProductDto));
