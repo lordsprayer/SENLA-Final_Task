@@ -23,8 +23,8 @@ public class SafeService {
                 .sum();
     }
 
-    public static Safe fillInSafe(List<Item> items, int[][] m, int count, int weight) {
-        List<Item> itemList = getItemList(items, m, count, weight);
+    public static Safe fillInSafe(List<Item> items, int[][] matrix, int weight) {
+        List<Item> itemList = getItemList(items, matrix, weight);
         Safe safe = new Safe(weight);
         safe.setItems(itemList);
         int totalPrice = getPrice(safe);

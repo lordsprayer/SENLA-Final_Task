@@ -6,22 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemService {
+import static com.senla.internship.util.Utils.getIndexes;
 
-    public static List<Item> getItemsFromString(String[] str) {
-        List<Item> items = new ArrayList<>();
-        String[] subStr;
-        String delimiter = ", ";
-        for(int i = 1; i< Objects.requireNonNull(str).length; i++) {
-            Item item = new Item();
-            subStr = str[i].split(delimiter);
-            item.setName(subStr[0]);
-            item.setVolume(Integer.parseInt(subStr[1]));
-            item.setPrice(Integer.parseInt(subStr[2]));
-            items.add(item);
-        }
-        return items;
-    }
+public class ItemService {
 
     public static List<Item> createItems(int count) {
         List<Item> items = new ArrayList<>();
@@ -47,33 +34,23 @@ public class ItemService {
                 .toArray();
     }
 
-    public static List<Item> getItemList(List<Item> itemList, int[][] m, int n, int W) {
-        int max = 0;
-        int index = 0;
-        int fullWeight = 0;
-
-        for (int i = 0; i <=n; i++) {
-            for (int j = 0; j <= W; j++) {
-                if (m[i][j] > max) {
-                    max = m[i][j];
-                    index = i;
-                    fullWeight = j;
-                }
-            }
-        }
-
+    public static List<Item> getItemList(List<Item> itemList, int[][] matrix, int weight) {
+        int count = itemList.size();
+        int max = matrix[count][weight];
+        List<Integer> indexes = getIndexes(matrix, count, weight);
+        int index = Objects.requireNonNull(indexes).get(0);
+        int fullWeight = Objects.requireNonNull(indexes).get(1);
         List<Item> items = new ArrayList<>();
         Item item1 = itemList.get(index - 1);
         items.add(item1);
         fullWeight -= item1.getVolume();
         max -= item1.getPrice();
-        if (max == 0) {
+        if (max == 0 && fullWeight == 0) {
             return items;
         } else {
             while (true) {
-                //max = 0;
-                for (int i = 0; i < n + 1; i++) {
-                    if (m[i][fullWeight] == max) {
+                for (int i = 0; i <= count; i++) {
+                    if (matrix[i][fullWeight] == max) {
                         index = i;
                         break;
                     }

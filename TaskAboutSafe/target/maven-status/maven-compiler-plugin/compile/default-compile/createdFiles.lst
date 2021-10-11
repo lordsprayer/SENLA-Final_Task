@@ -1,0 +1,6 @@
+com\senla\internship\model\Safe.class
+com\senla\internship\model\Item.class
+com\senla\internship\service\ItemService.class
+com\senla\internship\service\SafeService.class
+com\senla\internship\Main.class
+com\senla\internship\util\Utils.class
