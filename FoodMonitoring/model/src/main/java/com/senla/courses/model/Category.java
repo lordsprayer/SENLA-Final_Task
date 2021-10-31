@@ -3,7 +3,6 @@ package com.senla.courses.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter

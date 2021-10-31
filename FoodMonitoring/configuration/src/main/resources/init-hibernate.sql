@@ -1,0 +1,1 @@
+update `hibernate_sequence` set `next_val`= 20 where `next_val` = 1;

@@ -56,7 +56,6 @@ public class ShopProductController {
         return ResponseEntity.accepted().build();
     }
 
-    //todo мб лучше заменить на ShopProductCsv
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateShopProduct(@PathVariable Integer id, @RequestBody ShopProductDto shopProductDto){
         log.log(Level.INFO, "Received put request: /products/" + id);

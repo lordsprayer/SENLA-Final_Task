@@ -1,0 +1,1 @@
+insert into `categories`(`id`, `name`) values(1, 'овощи'), (2, 'фрукты');

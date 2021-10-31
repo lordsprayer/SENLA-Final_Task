@@ -1,0 +1,1 @@
+insert into `users`(`id`, `login`, `name`, `password`, `phone`, `surname`) values (1, 'user12', 'Александр', '$2a$10$dCPvy5y0KKiyxWMUJpotsOUBzThZAKmycuAFsWXMbgp7dIoctBGrS', '+375443454344', 'Тихонов')

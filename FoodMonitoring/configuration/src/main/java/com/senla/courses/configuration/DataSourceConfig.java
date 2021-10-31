@@ -1,6 +1,7 @@
 package com.senla.courses.configuration;
 
 import com.senla.courses.model.User;
+import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ public class DataSourceConfig {
     private static final String PROPERTY_MANE_HIBERNATE_USE_SQL_COMMENTS = "hibernate.use_sql_comments";
     private static final String PROPERTY_MANE_HIBERNATE_HDM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String PROPERTY_MANE_HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS = "hibernate.enable_lazy_load_no_trans";
+    private static final String PROPERTY_MANE_HIBERNATE_DIALECT = "hibernate.dialect";
 
     private final Environment env;
     @Autowired
@@ -77,7 +79,17 @@ public class DataSourceConfig {
         properties.put(PROPERTY_MANE_HIBERNATE_USE_SQL_COMMENTS, env.getProperty(PROPERTY_MANE_HIBERNATE_USE_SQL_COMMENTS));
         properties.put(PROPERTY_MANE_HIBERNATE_HDM2DDL_AUTO, env.getProperty(PROPERTY_MANE_HIBERNATE_HDM2DDL_AUTO));
         properties.put(PROPERTY_MANE_HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS, env.getProperty(PROPERTY_MANE_HIBERNATE_ENABLE_LAZY_LOAD_NO_TRANS));
+        properties.put(PROPERTY_MANE_HIBERNATE_DIALECT, env.getProperty(PROPERTY_MANE_HIBERNATE_DIALECT));
 
         return properties;
+
+    }
+
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
+        liquibase.setDataSource(getDataSource());
+        return liquibase;
     }
 }
