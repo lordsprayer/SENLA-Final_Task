@@ -36,6 +36,10 @@ dependencies {
 
     api group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.1'
 
+    api group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.7.8'
+
+
+
 
     api project(":repository")
     api project (":api")
