@@ -1,5 +1,6 @@
 package com.senla.internship.service;
 
+import com.senla.internship.dao.Repository;
 import com.senla.internship.model.Item;
 import com.senla.internship.model.Safe;
 
@@ -23,8 +24,9 @@ public class SafeService {
                 .sum();
     }
 
-    public static Safe fillInSafe(List<Item> items, int[][] matrix, int weight) {
-        List<Item> itemList = getItemList(items, matrix, weight);
+    public static Safe fillInSafe(int[][] matrix, Repository repository) {
+        List<Item> itemList = getItemList(matrix, repository);
+        int weight = repository.getWeight();
         Safe safe = new Safe(weight);
         safe.setItems(itemList);
         int totalPrice = getPrice(safe);

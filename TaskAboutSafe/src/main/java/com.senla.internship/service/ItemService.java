@@ -1,5 +1,6 @@
 package com.senla.internship.service;
 
+import com.senla.internship.dao.Repository;
 import com.senla.internship.model.Item;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public class ItemService {
         return items;
     }
 
+    public static void printItems(Repository repository) {
+        repository.getItems().forEach(System.out::println);
+    }
+
     public static int[] getVolumes(List<Item> items) {
         return items.stream()
                 .mapToInt(Item::getVolume)
@@ -34,12 +39,13 @@ public class ItemService {
                 .toArray();
     }
 
-    public static List<Item> getItemList(List<Item> itemList, int[][] matrix, int weight) {
+    public static List<Item> getItemList(int[][] matrix, Repository repository) {
+        List<Item> itemList = repository.getItems();
         int count = itemList.size();
-        int max = matrix[count][weight];
-        List<Integer> indexes = getIndexes(matrix, count, weight);
-        int index = Objects.requireNonNull(indexes).get(0);
-        int fullWeight = Objects.requireNonNull(indexes).get(1);
+        int max = matrix[matrix.length - 1][matrix[0].length - 1];
+        List<Integer> indexes = getIndexes(matrix);
+        int index = indexes.get(0);
+        int fullWeight = indexes.get(1);
         List<Item> items = new ArrayList<>();
         Item item1 = itemList.get(index - 1);
         items.add(item1);
