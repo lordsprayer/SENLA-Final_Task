@@ -1,38 +1,21 @@
 package com.senla.internship.service;
 
 import com.senla.internship.dao.Repository;
-import com.senla.internship.model.Item;
 import com.senla.internship.model.Safe;
+import com.senla.internship.model.SafeSpecification;
 
-import java.util.List;
-
-import static com.senla.internship.service.ItemService.getItemList;
 
 public class SafeService {
 
-    public static int getRealVolume(Safe safe) {
-        List<Item> items = safe.getItems();
-        return items.stream()
-                .mapToInt(Item::getVolume)
-                .sum();
-    }
+    public SafeSpecificationService safeSpecificationService = new SafeSpecificationService();
 
-    public static int getPrice(Safe safe) {
-        List<Item> items = safe.getItems();
-        return items.stream()
-                .mapToInt(Item::getPrice)
-                .sum();
-    }
-
-    public static Safe fillInSafe(int[][] matrix, Repository repository) {
-        List<Item> itemList = getItemList(matrix, repository);
-        int weight = repository.getWeight();
-        Safe safe = new Safe(weight);
-        safe.setItems(itemList);
-        int totalPrice = getPrice(safe);
-        int totalVolume = getRealVolume(safe);
+    public void fillInSafe(Safe safe, Repository repository) {
+        MatrixService matrixService = new MatrixService();
+        int [][]matrix = matrixService.getMatrix(repository);
+        matrixService.printMatrix(matrix);
+        SafeSpecification specification = safeSpecificationService.getSafeSpecification(matrix, repository);
+        safe.setItems(specification);
         System.out.println(safe);
-        System.out.printf("Total volume %d, total price %d", totalVolume, totalPrice);
-        return safe;
+        System.out.printf("Total volume %d, total price %d", specification.getVolume(), specification.getPrice());
     }
 }

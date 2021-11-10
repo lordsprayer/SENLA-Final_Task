@@ -10,16 +10,16 @@ import java.util.List;
 
 public class Repository {
 
-    private final int weight;
+    private final int volume;
     private final List<Item> items;
 
     public Repository(String fileName) {
-        weight = getWeightFromStrings(fileName);
+        volume = getVolumeFromStrings(fileName);
         items = getItemsFromStrings(fileName);
     }
 
-    public int getWeight() {
-        return weight;
+    public int getVolume() {
+        return volume;
     }
 
     public List<Item> getItems() {
@@ -42,7 +42,7 @@ public class Repository {
         return lines;
     }
 
-    private int getWeightFromStrings(String fileName)  {
+    private int getVolumeFromStrings(String fileName)  {
         return Integer.parseInt(getInfoFromFile(fileName).get(0));
     }
 
@@ -60,6 +60,10 @@ public class Repository {
             items.add(item);
         }
         return items;
+    }
+
+    public void printItems() {
+        this.getItems().forEach(System.out::println);
     }
 
 }

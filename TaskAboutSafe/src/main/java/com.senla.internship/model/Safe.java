@@ -3,6 +3,7 @@ package com.senla.internship.model;
 import java.util.List;
 
 public class Safe {
+
     private List<Item> items;
     private final int volume;
 
@@ -10,12 +11,8 @@ public class Safe {
         this.volume = volume;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setItems(SafeSpecification specification) {
+        this.items = specification.getItems();
     }
 
     @Override

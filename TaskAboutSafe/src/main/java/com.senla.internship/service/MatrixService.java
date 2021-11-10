@@ -1,22 +1,19 @@
-package com.senla.internship.util;
+package com.senla.internship.service;
 
 import com.senla.internship.dao.Repository;
 import com.senla.internship.model.Item;
+import com.senla.internship.model.MatrixCharacteristic;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.senla.internship.service.ItemService.getPrices;
-import static com.senla.internship.service.ItemService.getVolumes;
+public class MatrixService {
 
-public class Utils {
-
-    public static int[][] getMatrix(Repository repository) {
+    public int[][] getMatrix(Repository repository) {
         List<Item> items = repository.getItems();
-        int safeWeight = repository.getWeight();
+        int safeWeight = repository.getVolume();
         int itemsCount = items.size();
-        int[] itemsWeight = getVolumes(items);
-        int[] itemsPrice = getPrices(items);
+        int[] itemsWeight = items.stream().mapToInt(Item::getVolume).toArray();
+        int[] itemsPrice = items.stream().mapToInt(Item::getPrice).toArray();
         int[][] matrix = new int[itemsCount+1][safeWeight+1];
         for(int j=0; j<= safeWeight; j++)  {
             matrix[0][j] = 0;
@@ -33,7 +30,7 @@ public class Utils {
         return matrix;
     }
 
-    public static void printMatrixHeader(int columnsNumber) {
+    private void printMatrixHeader(int columnsNumber) {
         for(int i = 0; i<= columnsNumber; i++) {
             String format = String.format("%1$-3d", i);
             System.out.print(" " + format + " ");
@@ -42,7 +39,7 @@ public class Utils {
     }
 
 
-    public static void printMatrix(int[][] matrix) {
+    public void printMatrix(int[][] matrix) {
         int columnsNumber = matrix[0].length;
         printMatrixHeader(columnsNumber - 1);
         for (int[] rowsNumber : matrix) {
@@ -54,18 +51,18 @@ public class Utils {
         }
     }
 
-    public static List<Integer> getIndexes (int[][] matrix) {
-        List<Integer> indexes = new ArrayList<>();
+    public MatrixCharacteristic getCharacteristic(int[][] matrix) {
         int max = matrix[matrix.length - 1][matrix[0].length - 1];
+        MatrixCharacteristic characteristic = new MatrixCharacteristic(max);
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 if (matrix[i][j] == max) {
-                    indexes.add(i);
-                    indexes.add(j);
-                    return indexes;
+                    characteristic.setRow(i);
+                    characteristic.setColumn(j);
+                    return characteristic;
                 }
             }
         }
-        return new ArrayList<>(2);
+        return characteristic;
     }
 }

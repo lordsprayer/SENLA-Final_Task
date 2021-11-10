@@ -1,15 +1,10 @@
 package com.senla.internship.model;
 
 public class Item {
+
     private String name;
     private int volume;
     private int price;
-
-    public Item(String name, int volume, int price) {
-        this.name = name;
-        this.volume = volume;
-        this.price = price;
-    }
 
     public Item() {
     }
