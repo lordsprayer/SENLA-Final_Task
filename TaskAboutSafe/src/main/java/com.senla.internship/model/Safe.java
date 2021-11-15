@@ -11,9 +11,26 @@ public class Safe {
         this.volume = volume;
     }
 
-    public void setItems(SafeSpecification specification) {
-        this.items = specification.getItems();
+    public List<Item> getItems() {
+        return items;
     }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public int getUsedVolume() {
+        return items.stream().mapToInt(Item::getVolume).sum();
+    }
+
+    public int getItemsPrice() {
+        return items.stream().mapToInt(Item::getPrice).sum();
+    }
+
 
     @Override
     public String toString() {
